@@ -587,26 +587,26 @@ $(function() {
     }
 
     function addBaseLayers() {
-        // var baselayer = L.tileLayer('http://tile.stamen.com/watercolor/{z}/{x}/{y}.jpg', {
-        //     //attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
+    // Set the default tile provider and pass the API key to the most commonly used parameters
+    var basemap = trySetting('_tileProvider', 'CartoDB.Positron');
 
-        // }).addTo(App.mainMap);
-        L.tileLayer.provider('Stamen.Watercolor', { opacity: 0.4 }).addTo(App.mainMap);
-        //L.tileLayer.provider('Esri.WorldGrayCanvas', { opacity: 1 }).addTo(App.mainMap);
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-            // attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            opacity: 0.20,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: 'pk.eyJ1Ijoic21hcnF1ZXMiLCJhIjoiY2pyeGg2M2ZlMGxhNjQ0b2E1ajh5OWl5YiJ9.G074wzH9zGbDUonl3rJWrg'
-        }).addTo(App.mainMap);
+    L.tileLayer.provider(basemap, {
+        maxZoom: 18,
+        apiKey: trySetting('_tileProviderApiKey', ''),
+        apikey: trySetting('_tileProviderApiKey', ''),
+        key: trySetting('_tileProviderApiKey', ''),
+        accessToken: trySetting('_tileProviderApiKey', '')
+    }).addTo(App.mainMap);
 
-        L.geoJson(venetoData).addTo(App.mainMap);
+    // Add control for map attribution
+    L.control.attribution({
+        position: trySetting('_mapAttribution', 'bottomright')
+    }).addTo(App.mainMap);
 
+    // Example of adding a GeoJSON layer if still required
+    L.geoJson(venetoData).addTo(App.mainMap);
+}
 
-    }
 
     function loadingMsg(msg) {
         $('#loading-msg').text(msg);
