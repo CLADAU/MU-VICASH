@@ -571,12 +571,12 @@ $(function() {
         systemBusy('creating map');
         App.mainMap = L.map('main-map', {
             maxBounds: [
-                [44.010025, 5.489951],
-                [47.288006, 19.718466]
+                [-39.224087, 140.963157],  // Southwest coordinates of Victoria,
+                [-33.981401, 150.014854]   // Northeast coordinates of Victoria
             ],
             minZoom: 7,
             fullscreenControl: true,
-        }).setView([45.402312, 11.892034], 8.3);
+        }).setView([-37.4713, 144.7852], 7); // Center of Victoria with a zoom level that shows most of the state
         App.clusterPanes = {};
         Object.keys(App.field_values.settori).forEach(settore => {
             App.clusterPanes[settore] = App.mainMap.createPane('pane_' + settore);
