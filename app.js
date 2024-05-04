@@ -116,7 +116,16 @@ $(function() {
             clusterPaneZIndex: 620,
             maxClusterRadius: 100,
             sheetUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTHh-cnWFMg8lPGCH0tAhDp-vkYy5rOk9d5Wt39FidRh8sqzVATttfkvQOtwFVkl0b4T3ayU4QuO2MS/pub?output=csv'
-        }
+        },
+        currentData: [],
+        currentStats: {},
+        initialStats: {},
+        mainMap: null,
+        clusterMarkers: {},
+        clusterPanes: {},
+        sidebar: null,
+        data: [],
+        currentData: []
 
     };
 
