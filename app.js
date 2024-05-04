@@ -770,11 +770,6 @@ $(function() {
         buildClusterLayers();
         log('Received data:');
 
-
-        App.data = cleanData(data);
-        log('Cleaned data:');
-        log(data);
-
         // loadingMsg('adding markers');
         // for (const row of App.data) {
         //     App.clusterMarkers[getClusterLayerName(row)].addLayer(buildMarkerForElement(row));
