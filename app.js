@@ -115,17 +115,8 @@ $(function() {
             disableClusteringAtZoom: 14,
             clusterPaneZIndex: 620,
             maxClusterRadius: 100,
-            sheetUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTHh-cnWFMg8lPGCH0tAhDp-vkYy5rOk9d5Wt39FidRh8sqzVATttfkvQOtwFVkl0b4T3ayU4QuO2MS/pub?output=csv'
-        },
-        currentData: [],
-        currentStats: {},
-        initialStats: {},
-        mainMap: null,
-        clusterMarkers: {},
-        clusterPanes: {},
-        sidebar: null,
-        data: [],
-        currentData: []
+            sheetUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTHh-cnWFMg8lPGCH0tAhDp-vkYy5rOk9d5Wt39FidRh8sqzVATttfkvQOtwFVkl0b4T3ayU4QuO2MS/pub?gid=1197145941&single=true&output=csv'
+        }
 
     };
 
@@ -186,17 +177,17 @@ $(function() {
         }).addTo(App.mainMap);
 
         L.control.custom({
-                position: 'bottomleft',
-                content: '<input type="text" id="year-slider" name="my_range" value="" />',
-                classes: '',
-                id: 'timeline-container',
-                style: {
-                    cursor: 'pointer',
-                    width: '90%',
-                    margin: '10px auto 10px',
-                    float: 'none'
-                }
-            })
+            position: 'bottomleft',
+            content: '<input type="text" id="year-slider" name="my_range" value="" />',
+            classes: '',
+            id: 'timeline-container',
+            style: {
+                cursor: 'pointer',
+                width: '90%',
+                margin: '10px auto 10px',
+                float: 'none'
+            }
+        })
             .addTo(App.mainMap);
 
         App.sidebar = L.control.sidebar({
@@ -271,8 +262,8 @@ $(function() {
         for (const s of Object.keys(App.field_values.settori)) {
             App.filters[s] =
                 Bacon.fromEvent($(`#cluster-att-control a[data-cluster="${s}"]`), "click")
-                .scan(true, _ => !_)
-                .toProperty(true);
+                    .scan(true, _ => !_)
+                    .toProperty(true);
 
             App.filters[s]
                 .filter(_ => { return isSystemFree() })
@@ -311,8 +302,8 @@ $(function() {
         for (let provincia of Object.keys(App.field_values.province)) {
             App.filters[provincia] =
                 Bacon.fromEvent($(`.control-prov a[data-prov="${provincia}"]`), "click")
-                .scan(true, _ => !_)
-                .toProperty(true);
+                    .scan(true, _ => !_)
+                    .toProperty(true);
             App.filters[provincia].filter(_ => { return isSystemFree() })
                 .onValue(visible => toggleProvincia(provincia, visible));
             templateArgs[provincia] = App.filters[provincia];
@@ -334,8 +325,8 @@ $(function() {
             <div class="label">${App.field_values.fonti[fonte]}</div></a>`);
             App.filters[fonte] =
                 Bacon.fromEvent($(`.control-fonti a[data-fonte="${fonte}"]`), "click")
-                .scan(true, _ => !_)
-                .toProperty(true);
+                    .scan(true, _ => !_)
+                    .toProperty(true);
             App.filters[fonte].filter(_ => { return isSystemFree() })
                 .onValue(visible => toggleFonte(fonte, visible));
             templateArgs[fonte] = App.filters[fonte];
@@ -355,8 +346,8 @@ $(function() {
         for (let attivita of Object.keys(App.field_values.attivita)) {
             App.filters[attivita] =
                 Bacon.fromEvent($(`#cluster-att-control a[data-attivita="${attivita}"]`), "click")
-                .scan(true, _ => !_)
-                .toProperty(true);
+                    .scan(true, _ => !_)
+                    .toProperty(true);
             App.filters[attivita].filter(_ => { return isSystemFree() })
                 .onValue(visible => toggleAttivita(attivita, visible));
             templateArgs[attivita] = App.filters[attivita];
@@ -374,12 +365,12 @@ $(function() {
         startAttivitaControl();
         startYearControl();
         App.filters.all = Bacon.combineTemplate({
-                year_interval: App.filters.year_interval.toProperty(null),
-                province: App.filters.province.changes().toProperty(null),
-                attivita: App.filters.attivita.changes().toProperty(null),
-                settori: App.filters.settori.changes().toProperty(null),
-                fonti: App.filters.fonti.changes().toProperty(null)
-            })
+            year_interval: App.filters.year_interval.toProperty(null),
+            province: App.filters.province.changes().toProperty(null),
+            attivita: App.filters.attivita.changes().toProperty(null),
+            settori: App.filters.settori.changes().toProperty(null),
+            fonti: App.filters.fonti.changes().toProperty(null)
+        })
             .throttle(500)
             //.onValue(_ => console.log(_))
             .onValue(_ => updateViz(_));
@@ -580,12 +571,12 @@ $(function() {
         systemBusy('creating map');
         App.mainMap = L.map('main-map', {
             maxBounds: [
-                [-39.224087, 140.963157],  // Southwest coordinates of Victoria,
-                [-33.981401, 150.014854]   // Northeast coordinates of Victoria
+                [44.010025, 5.489951],
+                [47.288006, 19.718466]
             ],
             minZoom: 7,
             fullscreenControl: true,
-        }).setView([-37.4713, 144.7852], 7); // Center of Victoria with a zoom level that shows most of the state
+        }).setView([45.402312, 11.892034], 8.3);
         App.clusterPanes = {};
         Object.keys(App.field_values.settori).forEach(settore => {
             App.clusterPanes[settore] = App.mainMap.createPane('pane_' + settore);
@@ -776,20 +767,13 @@ $(function() {
     }
 
     function processData(data) {
-    buildClusterLayers();
-    log('Received data:');
+        buildClusterLayers();
+        log('Received data:');
 
-    // Comment out or remove the following line to disable data cleaning
-    // App.data = cleanData(data);
 
-    // Use the raw data instead
-    App.data = data;
-
-    log('Cleaned data:');
-    log(data);
-
-    updateCurrentData(App.data);
-}
+        App.data = cleanData(data);
+        log('Cleaned data:');
+        log(data);
 
         // loadingMsg('adding markers');
         // for (const row of App.data) {
