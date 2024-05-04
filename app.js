@@ -115,7 +115,7 @@ $(function() {
             disableClusteringAtZoom: 14,
             clusterPaneZIndex: 620,
             maxClusterRadius: 100,
-            sheetUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ3vkQTK-CrT7Rv6Rdu3uDKmumQB94Ic7WrmBu4ezak-72QWbkUISb7FfvR_Z1AhmYgfASVad205BE/pub?output=csv&bust=1'
+            sheetUrl: 'https://docs.google.com/spreadsheets/d/1dzsYLxFAbKr2JY2-0hzxY6HH0amOMfn11vMkYZZZpI8/edit#gid=1197145941'
         }
 
     };
